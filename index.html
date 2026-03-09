@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse TA505 Ransomware Aanval - Universiteit Maastricht</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --um-navy: #001C3D;
+            --um-red: #E30613;
+            --um-light-grey: #f4f4f4;
+            --um-white: #ffffff;
+            --um-text: #333333;
+        }
+
+        body {
+            background-color: var(--um-light-grey);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--um-text);
+            line-height: 1.6;
+        }
+
+        .header-um {
+            background-color: var(--um-navy);
+            color: var(--um-white);
+            padding: 4rem 0;
+            border-bottom: 8px solid var(--um-red);
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .container {
+            max-width: 900px;
+        }
+
+        /* Accordion Styling */
+        .accordion-item {
+            border: none;
+            margin-bottom: 1.2rem;
+            border-radius: 12px !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .accordion-button {
+            background-color: var(--um-white);
+            color: var(--um-navy);
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 1.25rem;
+            border-left: 6px solid var(--um-navy);
+            transition: all 0.3s ease;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: var(--um-navy);
+            color: var(--um-white);
+            border-left: 6px solid var(--um-red);
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+
+        .accordion-button::after {
+            filter: brightness(0) saturate(100%) invert(11%) sepia(31%) saturate(5453%) hue-rotate(195deg) brightness(93%) contrast(107%);
+        }
+
+        .accordion-button:not(.collapsed)::after {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Content Styling */
+        .tech-badge {
+            background-color: var(--um-red);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .source-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1.5rem;
+            color: var(--um-red);
+            text-decoration: none;
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--um-red);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .source-link:hover {
+            background-color: var(--um-red);
+            color: white;
+        }
+
+        .code-block {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .timeline-item {
+            border-left: 3px solid var(--um-red);
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: var(--um-red);
+            display: block;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            background-color: var(--um-navy);
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header class="header-um">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">Casestudy: TA505 Ransomware</h1>
+        <p class="lead mb-0">Analyse van de cyberaanval op de Universiteit Maastricht</p>
+    </div>
+</header>
+
+<main class="container mb-5">
+    <div class="accordion" id="attackAccordion">
+
+        <!-- Toelichting & Tijdlijn -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    1. Toelichting & Tijdlijn
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#attackAccordion">
+                <div class="accordion-body">
+                    <p>De aanval op de Universiteit Maastricht (UM) in 2019 is een schoolvoorbeeld van een gerichte ransomware-operatie door een <em>Advanced Persistent Threat</em> (APT) actor, genaamd <strong>TA505</strong>. De aanvallers maakten gebruik van de "Double Extortion" tactiek: data werd niet alleen versleuteld, maar ook gestolen om de druk op de universiteit te verhogen.</p>
+                    
+                    <div class="mt-4">
+                        <div class="timeline-item">
+                            <span class="timeline-date">15-16 Oktober 2019</span>
+                            Infectie via spear-phishing mail met een malafide Excel-bijlage (Get2-loader).
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">21 November 2019</span>
+                            Escalatie naar Domain Admin rechten door misbruik van zwakke configuraties en credential dumping.
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">December 2019</span>
+                            Exfiltratie van gevoelige data naar externe servers van de aanvallers.
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">23-24 December 2019</span>
+                            Massale uitrol van de Clop-ransomware; 267 Windows-servers worden versleuteld.
+                        </div>
+                    </div>
+
+                    <a href="https://www.maastrichtuniversity.nl/nl/cyberaanval-een-samenvatting" class="source-link" target="_blank">
+                        Bekijk de officiële samenvatting van de UM &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cyber Kill Chain -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    2. Cyber Kill Chain Analyse
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#attackAccordion">
+                <div class="accordion-body">
+                    <p>De TA505 operatie doorliep elke stap van de Kill Chain met hoge precisie:</p>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr><th>Fase</th><th>Technische Uitvoering bij UM</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Reconnaissance</strong></td><td>In kaart brengen van medewerkers via openbare bronnen voor phishing.</td></tr>
+                                <tr><td><strong>Weaponization</strong></td><td>Integratie van de <strong>Get2-loader</strong> in malafide Excel-macro's.</td></tr>
+                                <tr><td><strong>Delivery</strong></td><td>Verzenden van phishing-mails die inspeelden op de nieuwsgierigheid van ontvangers.</td></tr>
+                                <tr><td><strong>Exploitation</strong></td><td>Uitvoering van de macro na opening door de gebruiker, leidend tot de <strong>SDBbot RAT</strong>.</td></tr>
+                                <tr><td><strong>Installation</strong></td><td>Backdoors geïnstalleerd voor blijvende toegang (persistentie).</td></tr>
+                                <tr><td><strong>C2</strong></td><td>Communicatie met Command & Control servers via versleutelde kanalen.</td></tr>
+                                <tr><td><strong>Exfiltration</strong></td><td>Diefstal van data (Double Extortion) vóór de uiteindelijke encryptie.</td></tr>
+                                <tr><td><strong>Objectives</strong></td><td>Volledige encryptie van kritieke infrastructuur met Clop.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html" class="source-link" target="_blank">
+                        Meer over de Cyber Kill Chain &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- MITRE ATT&CK -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    3. MITRE ATT&CK Mapping
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#attackAccordion">
+                <div class="accordion-body">
+                    <p>De aanvalstechnieken van TA505 zijn direct te mappen op het MITRE ATT&CK framework:</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><span class="tech-badge">T1566.001</span> <strong>Spearphishing Attachment:</strong> Initiële toegang via Excel-bijlagen.</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><span class="tech-badge">T1003</span> <strong>OS Credential Dumping:</strong> Oogsten van administrator-wachtwoorden uit het geheugen.</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><span class="tech-badge">T1562.001</span> <strong>Impair Defenses:</strong> Uitschakelen van antivirus en security logging op servers.</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><span class="tech-badge">T1021.001</span> <strong>Remote Desktop Protocol:</strong> Laterale beweging door het netwerk.</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><span class="tech-badge">T1486</span> <strong>Data Encrypted for Impact:</strong> De finale stap met Clop-ransomware.</span>
+                        </li>
+                    </ul>
+                    <a href="https://attack.mitre.org/groups/G0092/" class="source-link" target="_blank">
+                        Bekijk TA505 Groepsprofiel op MITRE &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conclusie & Preventie -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    4. Preventie: EDR, SIEM & YARA
+                </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#attackAccordion">
+                <div class="accordion-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h5><strong>EDR (Endpoint Detection & Response)</strong></h5>
+                            <p>Een EDR-oplossing had de <strong>AMSI-bypass</strong> (Antimalware Scan Interface) moeten detecteren. TA505 gebruikt vaak PowerShell-scripts die in het geheugen worden uitgevoerd. EDR herkent de verdachte patronen in gedrag (fileless execution) die traditionele antivirus mist.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5><strong>SIEM (Security Information & Event Management)</strong></h5>
+                            <p>Het SIEM had alerts moeten genereren op basis van <strong>MFA-loze inlogpogingen</strong> en afwijkende administrator-activiteit. Monitoring op de integriteit van <strong>backup-logs</strong> had kunnen voorkomen dat de herstelmogelijkheden van de UM werden gesaboteerd.</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <h5><strong>YARA & Memory Scanning</strong></h5>
+                    <p>Omdat de SDBbot RAT vaak in het werkgeheugen verblijft, is <em>memory scanning</em> essentieel. Hieronder een voorbeeld van een (vereenvoudigde) YARA-rule om sporen van de malware te detecteren:</p>
+                    <div class="code-block">
+rule SDBbot_Memory_Pattern {
+    meta:
+        description = "Detecteert strings geassocieerd met SDBbot RAT"
+        author = "Security Analysis"
+    strings:
+        $s1 = "sdbbot" nocase
+        $s2 = "work_mode"
+        $s3 = "get_config"
+    condition:
+        2 of them
+}
+                    </div>
+                    <p>Door dergelijke regels periodiek te draaien over het RAM van kritieke servers, had de aanwezigheid van de aanvallers ontdekt kunnen worden voordat de data-exfiltratie voltooid was.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 Casestudy Analyse Project &bull; Systems & Organisation Security</p>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
